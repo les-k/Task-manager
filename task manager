@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Add some styling for the task manager */
+      .task-manager {
+        width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+      }
+
+      .task-manager h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .task-form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .task-input {
+        width: 75%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .add-task-btn {
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .task-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .task-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .task-text {
+        width: 75%;
+      }
+
+      .delete-task-btn {
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ccc;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="task-manager">
+      <h1>Task Manager</h1>
+      <div class="task-form">
+        <input type="text" class="task-input" id="task-input">
+        <button class="add-task-btn" id="add-task-btn">Add Task</button>
+      </div>
+      <ul class="task-list" id="task-list"></ul>
+    </div>
+
+    <!-- Add JavaScript to handle the task manager logic -->
+    <script>
+      // Get references to the task input and add task button
+      const taskInput = document.querySelector("#task-input");
+      const addTaskBtn = document.querySelector("#add-task-btn");
+
+      // Get a reference to the task list
+      const taskList = document.querySelector("#task-list");
+
+      // Add an event listener for the add task button
+      addTaskBtn.addEventListener("click", function () {
+        // Get the value of the task input
+        const task = taskInput.value;
+
+        // Create a new list item for the task
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("task-item");
+        taskItem.innerHTML= `
+          <div class="task-text">${task}</div>
+          <button class="delete-task-btn">Delete</button>
+        `;
+
+        // Add the delete task button event listener
+        taskItem
+          .querySelector(".delete-task-btn")
+          .addEventListener("click", function () {
+            taskList.removeChild(taskItem);
+          });
+
+        // Append the task item to the task list
+        taskList.appendChild(taskItem);
+
+        // Clear the task input
+        taskInput.value = "";
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
