@@ -1,0 +1,80 @@
+import datetime
+import sched
+import time
+from playsound import playsound  # optional library for playing notification sound
+
+class Task:
+    def __init__(self, title, description, status, reminder_time=None):
+        self.title = title
+        self.description = description
+        self.status = status
+        self.reminder_time = reminder_time
+
+class TaskManager:
+    def __init__(self):
+        self.tasks = []
+        self.scheduler = sched.scheduler(time.time, time.sleep)
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    def delete_task(self, task):
+        self.tasks.remove(task)
+
+    def update_task(self, task, new_title=None, new_description=None, new_status=None, new_reminder_time=None):
+        if new_title is not None:
+            task.title = new_title
+        if new_description is not None:
+            task.description = new_description
+        if new_status is not None:
+            task.status = new_status
+        if new_reminder_time is not None:
+            task.reminder_time = new_reminder_time
+
+    def display_tasks(self):
+        for task in self.tasks:
+            print(f"{task.title} - {task.description} - {task.status} - {task.reminder_time}")
+
+    def set_reminder(self, task, reminder_time):
+        task.reminder_time = reminder_time
+
+    def check_reminders(self):
+        now = datetime.datetime.now()
+        for task in self.tasks:
+            if task.reminder_time is not None:
+                reminder = datetime.datetime.strptime(task.reminder_time, "%Y-%m-%d %H:%M:%S")
+                if now > reminder - datetime.timedelta(minutes=5) and now < reminder:
+                    print(f"Reminder: {task.title} - {task.description} - {task.status} - {task.reminder_time}")
+                    playsound("notification.wav")  # optional: play a sound notification
+
+        # schedule the next check in 1 minute
+        self.scheduler.enter(60, 1, self.check_reminders)
+
+    def start_scheduler(self):
+        # schedule the first check in 1 minute
+        self.scheduler.enter(60, 1, self.check_reminders)
+        self.scheduler.run()
+
+# Example usage
+task1 = Task("Do laundry", "Wash clothes and dry them", "Incomplete", "2023-02-26 12:00:00")
+task2 = Task("Buy groceries", "Milk, bread, eggs, cheese", "Incomplete")
+
+manager = TaskManager()
+manager.add_task(task1)
+manager.add_task(task2)
+manager.display_tasks()
+
+manager.start_scheduler()
+
+
+
+
+
+
+
+
+
+
+
+
+
